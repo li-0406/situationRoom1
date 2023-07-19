@@ -26,5 +26,4 @@ git commit -m 'deploy'
 # git push -f git@github.com:<USERNAME>/<REPO>.git main:gh-pages
 # 最後成功時，用的是.git/config中的[remote "origin"] url = https://github.com/<USERNAME>/<REPO-NAME>.git
 git push -f https://github.com/li-0406/situationRoom1.git master:gh-pages
-
 cd -

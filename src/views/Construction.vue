@@ -52,14 +52,21 @@
         <div class="box" style="width: 788px">
           <h2>管渠檢視影像</h2>
           <div v-for="i in item.video" :key="i">
-            <video
+            <!-- <video
               ref="videoPlayer"
               controls
               style="width: 100%; border-radius: 12px; margin-top: 48px"
-              :src="require(`@/assets//video/${item.file}/see/${i}`)"
+              src="https://drive.google.com/file/d/18ND9FDdwmNrjduybTNeanO6hDq92Z7r6/preview"
             >
               <source type="video/mp4" />
-            </video>
+            </video> -->
+            <iframe
+              :src="i"
+              width="100%"
+              height="480"
+              allow="autoplay"
+              style="border-radius: 12px; margin-top: 48px"
+            ></iframe>
           </div>
         </div>
         <div class="box" style="width: 548px">
@@ -105,7 +112,10 @@ const data = ref([
     title: "士林主幹管",
     color: "#0D735A",
     file: "Shilin",
-    video: ["1.mp4", "2.mp4"],
+    video: [
+      "https://drive.google.com/file/d/18ND9FDdwmNrjduybTNeanO6hDq92Z7r6/preview",
+      "https://drive.google.com/file/d/1dD7kfEgPlNLuIKDRAHJBOvR_yDOpcY4T/preview",
+    ],
     gain: [
       {
         before: require("../assets/video/Shilin/fix/before1.jpg"),
@@ -121,7 +131,10 @@ const data = ref([
     title: "吉林路次幹管",
     color: "#16BF95",
     file: "Jilin",
-    video: ["1.mp4", "2.mp4"],
+    video: [
+      "https://drive.google.com/file/d/14hSeJG7zt73LiFQOe8wGbu3OL5NTkoJi/preview",
+      "https://drive.google.com/file/d/1Ltvc7SrqfkDYC9FTtjtJZPZlf4gJtRg7/preview",
+    ],
     gain: [
       {
         before: require("../assets/video/Jilin/fix/before1.jpg"),
@@ -137,7 +150,10 @@ const data = ref([
     title: "建國南北路次幹管",
     color: "#CCDD20",
     file: "Jianguo",
-    video: ["1.mp4", "2.mp4"],
+    video: [
+      "https://drive.google.com/file/d/18ND9FDdwmNrjduybTNeanO6hDq92Z7r6/preview",
+      "https://drive.google.com/file/d/1dD7kfEgPlNLuIKDRAHJBOvR_yDOpcY4T/preview",
+    ],
     gain: [
       {
         before: require("../assets/video/Jianguo/fix/before1.jpg"),
@@ -278,7 +294,7 @@ const data = ref([
 .maintain {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 219.25px;
+  margin-bottom: 259.48px;
   &:last-child {
     margin-bottom: 0;
   }
