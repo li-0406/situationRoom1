@@ -1,64 +1,61 @@
 <template>
-  <el-row style="margin: 64px auto; width: 1400px">
+  <el-row style="margin: 60px auto; width: 1400px">
     <el-col :span="24">
       <h2 class="middleTitle">管線延壽維護</h2>
     </el-col>
-    <el-col :span="24" style="margin-bottom: 40px">
+    <el-col :span="24" style="margin-bottom: 80px">
       <div class="box result">
         <h2 class="title">管線延壽檢視成果</h2>
         <div class="card">
           <div v-for="item in card" :key="item">
             <h3 class="word">{{ item.word }}</h3>
-            <p class="sum">{{ item.length }}</p>
-            <p style="font-size: 24px">{{ item.schedule }}</p>
-            <div class="progress">
-              <div
-                class="bar"
-                :class="{ first: item.schedule === '11.24%' }"
-                :style="{ width: item.schedule }"
-              ></div>
+            <div class="progress"></div>
+            <div class="view">
+              <p class="sum">{{ item.viewlength }}</p>
+              <p style="text-align: center">檢視長度(m)</p>
             </div>
+            <div class="length">
+              <p>{{ item.length }}</p>
+              <p>管線長度(m)</p>
+            </div>
+            <p style="font-size: 24px">{{ item.schedule }}</p>
           </div>
         </div>
-        <div class="select">
-          <div
-            class="btn"
-            v-for="(item, index) in result"
-            :key="item"
-            :class="{ active: value === index, disabled: index > 0 }"
-          >
-            <h3>{{ item }}</h3>
-          </div>
+      </div>
+    </el-col>
+    <el-col>
+      <div class="select">
+        <div
+          class="btn"
+          v-for="(item, index) in result"
+          :key="item"
+          :class="{ active: value === index, disabled: index > 0 }"
+        >
+          <h3>{{ item }}</h3>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="value" v-for="item in information[0]" :key="item.name">
+          <p :class="item.name?.length === 2 ? 'long-name' : ''">
+            {{ item.name }}
+          </p>
+          <div class="bar" :style="{ width: item.width }"></div>
+          <p>{{ item.num }}</p>
         </div>
         <p style="text-align: right; margin: 16px 0 24px; font-size: 18px">
           單位(m)
         </p>
-        <div class="container">
-          <div class="value" v-for="item in information[0]" :key="item.name">
-            <p :class="item.name?.length === 2 ? 'long-name' : ''">
-              {{ item.name }}
-            </p>
-            <div class="bar" :style="{ width: item.width }"></div>
-            <p>{{ item.num }}</p>
-          </div>
-        </div>
       </div>
     </el-col>
 
     <el-col :span="8">
       <div class="box year">
-        <h2 class="title">管線使用年限比例圖</h2>
+        <h2 class="title" style="padding-bottom: 32px">管線使用年限比例圖</h2>
         <div class="circle">
           <div class="pie">
             <img src="../assets/year/Group3.svg" />
           </div>
-          <!-- <img
-            src="../assets/length/Vector3.svg"
-            style="position: absolute; top: 10px; left: 60px; z-index: -1"
-          />
-          <p style="position: absolute; top: 55px; left: 45px">18.49%</p>
-          <p style="position: absolute; top: 110px; left: 33px">20.88%</p>
-          <p style="position: absolute; top: 130px; left: 120px">59.07%</p> -->
         </div>
         <div>
           <div class="tip" v-for="item in notFull" :key="item.text">
@@ -71,7 +68,7 @@
 
     <el-col :span="16">
       <div class="box totalPlan">
-        <h2 class="title">總計畫長度</h2>
+        <h2 class="title" style="padding-bottom: 76px">總計畫長度</h2>
         <div class="chart">
           <div class="bar" style="height: 591px; padding-top: 12px">
             <BarChart />
@@ -223,9 +220,24 @@ const options = ref([
   { text: "第四期", color: "#FB8500" },
 ]);
 const card = ref([
-  { word: "所有管線", length: "108,205", schedule: "11.24%" },
-  { word: "主次幹管", length: "8,205", schedule: "6.49%" },
-  { word: "分管網", length: "100,000", schedule: "11.96%" },
+  {
+    word: "總計",
+    viewlength: "288,205",
+    length: "1,759,725",
+    schedule: "16.38%",
+  },
+  {
+    word: "主次幹管",
+    viewlength: "8,205",
+    length: "126,426",
+    schedule: "6.49%",
+  },
+  {
+    word: "分支管",
+    viewlength: "280,000",
+    length: "1,633,299",
+    schedule: "17.14%",
+  },
 ]);
 const semicircle = ref([
   {
@@ -282,24 +294,24 @@ const bar = ref([
 ]);
 
 const notFull = ref([
-  { text: "40年以上未滿50年", color: "#FF9914" },
+  { text: "40年以上未滿50年", color: "#FB8500" },
   { text: "30年以上未滿40年", color: "#8ECAE6" },
-  { text: "20年以上未滿30年", color: "#219EBC" },
-  { text: "未滿20年", color: "#023047" },
+  { text: "20年以上未滿30年", color: "#FFE609" },
+  { text: "10年以上未滿20年", color: "#6E8B9A" },
+  { text: "未滿10年", color: "#023047" },
 ]);
 </script>
 
 <style lang="scss" scoped>
 .box {
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.68);
-  box-shadow: -1px 1px 8px 0px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
+  border: 8px solid #219ebc;
   padding: 32px;
 }
 .title {
   font-size: 28px;
   font-weight: 500;
+  color: #219ebc;
 }
 
 .dot::before {
@@ -333,7 +345,7 @@ const notFull = ref([
         .finish {
           margin-top: 13px;
           &::before {
-            background: #023047;
+            background: #fb8500;
           }
         }
         .plan::before {
@@ -390,7 +402,7 @@ const notFull = ref([
 .middleTitle {
   font-size: 32px;
   font-weight: 700;
-  padding-bottom: 24px;
+  padding-bottom: 80px;
   display: flex;
   align-items: center;
   &::before {
@@ -399,7 +411,7 @@ const notFull = ref([
     height: 12px;
     display: inline-block;
     border-radius: 4px;
-    background: #171b3c;
+    background: #ff9914;
     margin-right: 16px;
   }
 }
@@ -408,7 +420,6 @@ const notFull = ref([
   display: flex;
   flex-direction: column;
   margin-right: 12px;
-
   .circle {
     width: 100%;
     margin: 20px 0 60px;
@@ -454,96 +465,121 @@ const notFull = ref([
   .card {
     display: flex;
     justify-content: space-between;
-    margin: 48px 0 80px;
-
+    margin-top: 48px h3 {
+      text-align: center;
+      font-size: 30px;
+    }
     > div {
-      flex: 1;
-      background: #e0e0e0;
-      padding: 20px 20px 32px;
-      border-radius: 16px;
-      &:nth-child(2) {
-        margin: 0 32px;
-      }
-    }
-
-    .sum {
-      font-size: 48px;
-      font-weight: 700;
-      margin: 4px 0 40px;
-      &::after {
-        content: "m";
-        font-size: 18px;
-        font-weight: 400;
-        margin: 0 12px 0 8px;
-      }
-    }
-    .progress {
-      width: 100%;
-      height: 20px;
-      background: #c2c2c2;
-      border-radius: 4px;
-      margin-top: 4px;
-      .bar {
-        height: 20px;
-        background: #219ebc;
-        border-radius: 4px;
-      }
-      .first {
-        background: #023047;
-      }
-    }
-  }
-  .select {
-    display: flex;
-    flex-wrap: wrap;
-
-    .btn {
-      border-radius: 8px;
-      border: 2px solid #023047;
-      background: rgba(255, 255, 255, 0.68);
-      color: #023047;
-      padding: 12px 24px;
-      margin-right: 16px;
-      cursor: pointer;
-      // &:hover {
-      // background: #6e8b9a;
-      // border: 2px solid #6e8b9a;
-      // color: #fff;
-      // transition: background 0.3s, color 0.3s, border 0.3s;
-      // }
-    }
-    .active {
-      background-color: #023047;
-      color: #fff;
-    }
-    .disabled {
-      pointer-events: none;
-      background: #c2c2c2;
-      border: 2px solid #c2c2c2;
-      color: #fff;
-    }
-  }
-  .container {
-    font-size: 24px;
-    .value {
+      padding: 40px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      .bar {
-        height: 20px;
-        background: #fb8500;
-        border-radius: 4px;
-        margin: 0 16px;
-        transition: 0.3s;
+    }
+    .view {
+      text-align: center;
+      color: #ff9914;
+      .sum {
+        font-size: 48px;
+        font-weight: 700;
       }
+      p {
+        font-size: 30px;
+        font-weight: 500;
+        &:last-child {
+          display: flex;
+          align-items: center;
+          &::before {
+            content: "";
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            border-radius: 4px;
+            background: #ff9914;
+            margin-right: 16px;
+          }
+        }
+      }
+    }
+    .length {
+      color: #858585;
+      text-align: center;
+      margin-top: 40px;
+      p {
+        font-size: 30px;
+        font-weight: 500;
+        &:last-child {
+          display: flex;
+          align-items: center;
+          &::before {
+            content: "";
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            border-radius: 4px;
+            background: #c2c2c2;
+            margin-right: 16px;
+          }
+        }
+      }
+    }
 
-      .long-name {
-        width: 96px;
-        text-align: right;
-      }
+    .progress {
+      width: 320px;
+      height: 320px;
+      background: #c2c2c2;
+      margin: 40px 0;
     }
-    .value:nth-child(2) {
-      margin: 16px 0;
+  }
+}
+.select {
+  display: flex;
+  flex-wrap: wrap;
+
+  .btn {
+    border-radius: 8px 8px 0px 0px;
+    color: #023047;
+    padding: 12px 24px;
+    border: 2px solid #8ecae6;
+    color: #219ebc;
+    cursor: pointer;
+    // &:hover {
+    // background: #6e8b9a;
+    // border: 2px solid #6e8b9a;
+    // color: #fff;
+    // transition: background 0.3s, color 0.3s, border 0.3s;
+    // }
+  }
+  .active {
+    background-color: #219ebc;
+    border: 2px solid #219ebc;
+    color: #fff;
+  }
+  .disabled {
+    cursor: not-allowed;
+  }
+}
+.container {
+  font-size: 24px;
+  margin: 32px 0 120px;
+  padding: 0 48px;
+  .value {
+    display: flex;
+    align-items: center;
+    .bar {
+      height: 20px;
+      background: #fb8500;
+      border-radius: 4px;
+      margin: 0 16px;
+      transition: 0.3s;
     }
+
+    .long-name {
+      width: 96px;
+      text-align: right;
+    }
+  }
+  .value:nth-child(2) {
+    margin: 16px 0;
   }
 }
 </style>

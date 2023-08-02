@@ -24,7 +24,7 @@
 <style lang="scss" scoped>
 @import url("@/assets/app.css");
 nav {
-  background-color: #171b3c;
+  background-color: #219ebc;
   display: flex;
   justify-content: space-between;
   align-items: center;
