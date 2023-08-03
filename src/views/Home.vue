@@ -6,19 +6,80 @@
     <el-col :span="24" style="margin-bottom: 80px">
       <div class="box result">
         <h2 class="title">管線延壽檢視成果</h2>
-        <div class="card">
-          <div v-for="item in card" :key="item">
-            <h3 class="word">{{ item.word }}</h3>
-            <div class="progress"></div>
-            <div class="view">
-              <p class="sum">{{ item.viewlength }}</p>
-              <p style="text-align: center">檢視長度(m)</p>
+        <div class="cards">
+          <div class="card">
+            <div>
+              <h3 class="word">{{ card[0].word }}</h3>
+              <div class="progress">
+                <div
+                  class="circle circle0"
+                  :style="`--angle: calc(${card[0].schedule} * 3.6deg)`"
+                >
+                  <div class="value">{{ card[0].schedule }}%</div>
+
+                  <div class="circleInner">
+                    <img class="sea" src="../assets/sea.svg" />
+                    <img class="sea1" src="../assets/sea1.svg" />
+                  </div>
+                </div>
+              </div>
+              <div class="view">
+                <p class="sum">{{ card[0].viewlength }}</p>
+                <p style="text-align: center">檢視長度(m)</p>
+              </div>
+              <div class="length">
+                <p>{{ card[0].length }}</p>
+                <p>管線長度(m)</p>
+              </div>
             </div>
-            <div class="length">
-              <p>{{ item.length }}</p>
-              <p>管線長度(m)</p>
+          </div>
+          <div class="card">
+            <div>
+              <h3 class="word">{{ card[1].word }}</h3>
+              <div class="progress">
+                <div
+                  class="circle circle1"
+                  :style="`--angle: calc(${card[1].schedule} * 3.6deg)`"
+                >
+                  <div class="value">{{ card[1].schedule }}%</div>
+                  <div class="circleInner">
+                    <img class="sea" src="../assets/sea.svg" />
+                  </div>
+                </div>
+              </div>
+              <div class="view">
+                <p class="sum">{{ card[1].viewlength }}</p>
+                <p style="text-align: center">檢視長度(m)</p>
+              </div>
+              <div class="length">
+                <p>{{ card[1].length }}</p>
+                <p>管線長度(m)</p>
+              </div>
             </div>
-            <p style="font-size: 24px">{{ item.schedule }}</p>
+          </div>
+          <div class="card">
+            <div>
+              <h3 class="word">{{ card[2].word }}</h3>
+              <div class="progress">
+                <div
+                  class="circle circle2"
+                  :style="`--angle: calc(${card[2].schedule} * 3.6deg)`"
+                >
+                  <div class="value">{{ card[2].schedule }}%</div>
+                  <div class="circleInner">
+                    <img class="sea" src="../assets/sea.svg" />
+                  </div>
+                </div>
+              </div>
+              <div class="view">
+                <p class="sum">{{ card[2].viewlength }}</p>
+                <p style="text-align: center">檢視長度(m)</p>
+              </div>
+              <div class="length">
+                <p>{{ card[2].length }}</p>
+                <p>管線長度(m)</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -173,7 +234,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import BarChart from "../components/BarChart.vue";
 
 let value = ref(0);
@@ -185,6 +246,30 @@ const result = ref([
   "第四期延壽成果",
 ]);
 
+const trs = (item, name) => {
+  let circle = document.querySelector(name);
+  let value = document.querySelector(".value");
+  let startValue = 0;
+  let endValue = item.schedule;
+  for (const i in item) {
+    let speed = 100;
+    let progress = setInterval(() => {
+      startValue += 0.1;
+      // value.textContent = `${startValue}%`;
+      circle.style = `--angle: calc(${startValue} * 3.6deg)`;
+      //console.log(startValue, endValue);
+      if (startValue >= endValue) {
+        clearInterval(progress); // 到達結束值時清除定時器
+      }
+    }, speed);
+  }
+};
+
+onMounted(() => {
+  trs(card.value[0], ".circle0");
+  trs(card.value[1], ".circle1");
+  trs(card.value[2], ".circle2");
+});
 const selectButton = (index) => (value.value = index);
 
 const length = (value) => value * 0.00333;
@@ -224,19 +309,19 @@ const card = ref([
     word: "總計",
     viewlength: "288,205",
     length: "1,759,725",
-    schedule: "16.38%",
+    schedule: "16.38",
   },
   {
     word: "主次幹管",
     viewlength: "8,205",
     length: "126,426",
-    schedule: "6.49%",
+    schedule: "6.49",
   },
   {
     word: "分支管",
     viewlength: "280,000",
     length: "1,633,299",
-    schedule: "17.14%",
+    schedule: "17.14",
   },
 ]);
 const semicircle = ref([
@@ -462,10 +547,13 @@ const notFull = ref([
 
 .result {
   padding: 32px 48px;
-  .card {
+  .cards {
     display: flex;
     justify-content: space-between;
-    margin-top: 48px h3 {
+    margin-top: 48px;
+  }
+  .card {
+    h3 {
       text-align: center;
       font-size: 30px;
     }
@@ -524,10 +612,58 @@ const notFull = ref([
     }
 
     .progress {
-      width: 320px;
-      height: 320px;
-      background: #c2c2c2;
       margin: 40px 0;
+
+      .circle {
+        position: relative;
+        background: conic-gradient(#fb8500 var(--angle, 0deg), #e0e0e0 0deg);
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        .circleInner {
+          position: absolute;
+          height: 280px;
+          width: 280px;
+          border-radius: 50%;
+          background: #fff;
+          overflow: hidden;
+          .sea {
+            position: absolute;
+            z-index: 1;
+            bottom: -25px;
+          }
+          .sea1 {
+            position: absolute;
+            z-index: 1;
+            bottom: -25px;
+          }
+        }
+        &::before {
+          content: "";
+        }
+      }
+      .value {
+        position: relative;
+        font-size: 36px;
+        font-weight: 700;
+        z-index: 1;
+      }
+      // @keyframes progressAnimation {
+      //   0% {
+      //     --angle: 0deg; /* 動畫起始角度為 0deg */
+      //   }
+      //   50% {
+      //     --angle: 60deg; /* 動畫起始角度為 0deg */
+      //   }
+      //   100% {
+      //     --angle: 180deg;
+      //   }
+      // }
     }
   }
 }
